@@ -1,0 +1,65 @@
+{
+  "id": "/monitor/wxprometheus",
+  "cmd": null,
+  "cpus": 10,
+  "mem": 10240,
+  "disk": 0,
+  "instances": 1,
+  "constraints": [
+    [
+      "bz",
+      "CLUSTER",
+      "monitor"
+    ],
+    [
+      "env",
+      "CLUSTER",
+      "pro"
+    ]
+  ],
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "/prometheus",
+        "hostPath": "/home/soft/prometheus",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/etc/prometheus",
+        "hostPath": "/etc/prometheus",
+        "mode": "RW"
+      }
+    ],
+    "docker": {
+      "image": "dockerhub.yeshj.com/monitor/prometheus:1.6.1",
+      "network": "HOST",
+      "portMappings": null,
+      "privileged": false,
+      "parameters": [],
+      "forcePullImage": false
+    }
+  },
+  "healthChecks": [
+    {
+      "path": "/graph",
+      "protocol": "HTTP",
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false,
+      "port": 9090
+    }
+  ],
+  "portDefinitions": [
+    {
+      "port": 10037,
+      "protocol": "tcp",
+      "labels": {}
+    }
+  ],
+  "uris": [
+    "file:///etc/docker.tar.gz"
+  ]
+}
